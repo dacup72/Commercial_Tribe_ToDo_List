@@ -18,4 +18,4 @@ const toDoItem = new Schema({
 
 const ToDoItem = mongoose.model("ToDoItem", toDoItem);
 
-export default = ToDoItem;
+export default ToDoItem;
