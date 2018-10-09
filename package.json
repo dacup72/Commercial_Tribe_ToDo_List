@@ -1,5 +1,5 @@
 {
-  "name": "simple-todo",
+  "name": "commercial_tribe_todo_list",
   "engines": {
     "node": ">=10"
   },
@@ -16,6 +16,7 @@
     "babel-loader": "^8.0.2",
     "body-parser": "^1.18.3",
     "express": "^4.16.3",
+    "mongoose": "^5.3.2",
     "prop-types": "^15.6.2",
     "react": "^16.5.2",
     "react-dom": "^16.5.2",

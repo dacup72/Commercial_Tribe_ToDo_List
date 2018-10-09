@@ -4,6 +4,7 @@ import webpack from 'webpack';
 import WebpackDevServer from 'webpack-dev-server';
 import bodyParser from 'body-parser';
 import TodoRoutes from './todo-routes';
+import mongoose from 'mongoose';
 
 const APP_PORT = 3001;
 
@@ -36,5 +37,8 @@ const app = new WebpackDevServer(compiler, {
 app.use(bodyParser.json());
 app.use('/', express.static(path.resolve(__dirname, '../public')));
 app.use(TodoRoutes);
+
+// brings in mongo connection
+require("../config/connection.js");
 
 app.listen(APP_PORT, () => { console.log(`App is now running on http://localhost:${APP_PORT}`); });
