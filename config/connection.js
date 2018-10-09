@@ -1,5 +1,6 @@
 import mongoose from "mongoose";
 
+// I didn't hide this in a keys.js to keep things simple
 const mongoKey = "mongodb://dacup72:password1@ds127293.mlab.com:27293/tododb";
 
 mongoose.connect(mongoKey, { useNewUrlParser: true }, function (error) {
