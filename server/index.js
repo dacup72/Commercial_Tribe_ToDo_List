@@ -3,7 +3,7 @@ import path from 'path';
 import webpack from 'webpack';
 import WebpackDevServer from 'webpack-dev-server';
 import bodyParser from 'body-parser';
-import TodoRoutes from './todo-routes';
+import TodoRoutes from '../routes';
 import mongoose from 'mongoose';
 
 const APP_PORT = 3001;

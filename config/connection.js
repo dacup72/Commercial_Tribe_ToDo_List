@@ -11,4 +11,4 @@ mongoose.connect(mongoKey, { useNewUrlParser: true }, function (error) {
   }
 });
 
-export default = mongoose;
+export default mongoose;
