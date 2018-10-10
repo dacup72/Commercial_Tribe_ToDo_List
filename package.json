@@ -4,7 +4,13 @@
     "node": ">=10"
   },
   "scripts": {
-    "start": "babel-node ./server/index.js"
+    "start": "if-env NODE_ENV=production && yarn start:prod || yarn start:dev",
+    "start:prod": "node index.js",
+    "start:dev": "concurrently \"nodemon --ignore 'client/*'\" \"yarn client\"",
+    "client": "cd client && yarn start",
+    "install": "cd client && yarn install;",
+    "build": "cd client && yarn build",
+    "heroku-postbuild": "yarn build"
   },
   "dependencies": {
     "@babel/core": "^7.1.0",
@@ -13,19 +19,20 @@
     "@babel/preset-env": "^7.1.0",
     "@babel/preset-react": "^7.0.0",
     "@babel/runtime": "^7.0.0",
-    "babel-loader": "^8.0.2",
+    "babel-loader": "8.0.4",
     "body-parser": "^1.18.3",
     "express": "^4.16.3",
     "mongoose": "^5.3.2",
     "prop-types": "^15.6.2",
-    "react": "^16.5.2",
-    "react-dom": "^16.5.2",
     "relay": "^0.8.0-1",
     "webpack": "^4.19.1",
     "webpack-dev-server": "^3.1.8",
-    "whatwg-fetch": "^3.0.0"
+    "whatwg-fetch": "^3.0.0",
+    "if-env": "^1.0.4"
   },
   "devDependencies": {
-    "@babel/node": "^7.0.0"
+    "@babel/node": "^7.0.0",
+    "nodemon": "^1.11.0",
+    "concurrently": "^4.0.1"
   }
 }
