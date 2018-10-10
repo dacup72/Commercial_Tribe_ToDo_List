@@ -1,9 +1,9 @@
 import React, { Component, Fragment } from 'react';
 //import FetchApi from '../fetch-api';
 import API from '../../utils/API';
-import { ButtonGroup, Button } from 'react-bootstrap';
-
+import { ButtonGroup } from 'react-bootstrap';
 import TodoItem from '../TodoItem';
+import TodoForm from '../TodoForm';
 
 const ENTER_KEY_CODE = 13;
 
@@ -47,6 +47,7 @@ export default class TodoMain extends Component {
 
   handleKeyDown = e => {
     if (e.keyCode !== ENTER_KEY_CODE) return;
+    e.preventDefault();
     this.createTodo();
   };
 
@@ -54,18 +55,12 @@ export default class TodoMain extends Component {
     return (
       <Fragment>
         <h1>todos</h1>
-        <input
-          autoFocus
-          onChange={this.handleChange}
-          onKeyDown={this.handleKeyDown}
-          placeholder="What needs to be done?"
+        <TodoForm 
           value={this.state.newText}
+          handleChange={this.handleChange}
+          handleKeyDown={this.handleKeyDown}
         />
         <ButtonGroup vertical block>
-          <Button>Full width button</Button>
-          <Button>Full width button</Button>
-        </ButtonGroup>;
-        <ul>
           {this.state.todos.length > 0 ? this.state.todos.map(todo => (
             <TodoItem
               data={todo}
@@ -73,7 +68,7 @@ export default class TodoMain extends Component {
               handleDeleteRequest={this.handleDeleteRequest}
             />
           )) : null}
-        </ul>
+        </ButtonGroup>
       </Fragment>
     );
   }

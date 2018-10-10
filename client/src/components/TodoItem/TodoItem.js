@@ -1,13 +1,9 @@
 import React, { Fragment } from 'react';
+import { Button } from 'react-bootstrap';
 
 const TodoItem = ({ handleDeleteRequest, data: { text, _id, checked } }) => (
   <Fragment>
-    <li>
-      <div className="view">
-        <label>{text}</label>
-        <button onClick={() => handleDeleteRequest(_id)}>Remove Todo</button>
-      </div>
-    </li>
+    <Button>{text}</Button>
   </Fragment>
 );
 
