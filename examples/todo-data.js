@@ -2,6 +2,7 @@ let todosCreated = 1;
 let todos = [{
 	id: 1,
 	text: 'Finish coding exercise',
+	checked: false
 }];
 
 export default class TodoData {
@@ -28,8 +29,10 @@ export default class TodoData {
 
 	static update(id, todo) {
 		return new Promise((resolve, reject) => {
-			// TODO: Implement
-			reject('Not Implemented');
+			const todoIndex = todos.findIndex(todo => todo.id.toString() === id.toString());
+			if (todoIndex < 0 || todoIndex >= todos.length) return reject();
+			todoIndex.checked ? todoIndex.checked = false : todoIndex.checked = true;
+			resolve();
 		})
 	}
 }

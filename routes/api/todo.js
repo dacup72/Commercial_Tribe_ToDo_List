@@ -7,7 +7,10 @@ const router = express.Router();
 // Matches with "/api/todo"
 router.route('/')
   .get(findAll)
-  .post(createItem)
+  .post(createItem);
+
+// Matches with "/api/todo/:id"
+router.route('/:id')
   .delete(deleteItem)
   .put(updateItem);
 
