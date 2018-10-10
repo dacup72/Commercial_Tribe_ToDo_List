@@ -1,6 +1,9 @@
-import React, { Component } from 'react';
+import React, { Component, Fragment } from 'react';
 //import FetchApi from '../fetch-api';
 import API from '../../utils/API';
+import { ButtonGroup, Button } from 'react-bootstrap';
+
+import TodoItem from '../TodoItem';
 
 const ENTER_KEY_CODE = 13;
 
@@ -32,6 +35,12 @@ export default class TodoMain extends Component {
       .catch(() => alert('There was an error deleting todo'));
   };
 
+  handleUpdateRequest = id => {
+    API.updateTodo(id)
+      .then(() => this.getTodos())
+      .catch(() => alert('There was an error updating todo'));
+  }
+
   handleChange = e => {
     this.setState({ newText: e.target.value });
   };
@@ -43,7 +52,7 @@ export default class TodoMain extends Component {
 
   render() {
     return (
-      <div>
+      <Fragment>
         <h1>todos</h1>
         <input
           autoFocus
@@ -52,17 +61,20 @@ export default class TodoMain extends Component {
           placeholder="What needs to be done?"
           value={this.state.newText}
         />
+        <ButtonGroup vertical block>
+          <Button>Full width button</Button>
+          <Button>Full width button</Button>
+        </ButtonGroup>;
         <ul>
           {this.state.todos.length > 0 ? this.state.todos.map(todo => (
-            <li key={todo._id}>
-              <div className="view">
-                <label>{todo.text}</label>
-                <button onClick={() => this.handleDeleteRequest(todo._id)}>Remove Todo</button>
-              </div>
-            </li>
+            <TodoItem
+              data={todo}
+              key={todo._id}
+              handleDeleteRequest={this.handleDeleteRequest}
+            />
           )) : null}
         </ul>
-      </div>
+      </Fragment>
     );
   }
 }
