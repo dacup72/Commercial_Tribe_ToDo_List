@@ -1,7 +1,7 @@
 import React, { Component, Fragment } from 'react';
 //import FetchApi from '../fetch-api';
 import API from '../../utils/API';
-import { ButtonGroup } from 'react-bootstrap';
+import { ListGroup } from 'react-bootstrap';
 import TodoItem from '../TodoItem';
 import TodoForm from '../TodoForm';
 
@@ -35,8 +35,8 @@ export default class TodoMain extends Component {
       .catch(() => alert('There was an error deleting todo'));
   };
 
-  handleUpdateRequest = id => {
-    API.updateTodo(id)
+  handleUpdateRequest = (id, checked) => {
+    API.updateTodo(id, {checked: !checked})
       .then(() => this.getTodos())
       .catch(() => alert('There was an error updating todo'));
   }
@@ -51,24 +51,40 @@ export default class TodoMain extends Component {
     this.createTodo();
   };
 
+  dynamicSort = property => {
+    let sortOrder = 1;
+    if (property[0] === "-") {
+      sortOrder = -1;
+      property = property.substr(1);
+    }
+    return function (a, b) {
+      let result = (a[property] < b[property]) ? -1 : (a[property] > b[property]) ? 1 : 0;
+      return result * sortOrder;
+    }
+  }
+
   render() {
     return (
       <Fragment>
-        <h1>todos</h1>
+        <h1>Todos</h1>
         <TodoForm 
           value={this.state.newText}
           handleChange={this.handleChange}
           handleKeyDown={this.handleKeyDown}
         />
-        <ButtonGroup vertical block>
-          {this.state.todos.length > 0 ? this.state.todos.map(todo => (
+        <hr />
+        <ListGroup>
+          {this.state.todos.length > 0 ? this.state.todos.sort(this.dynamicSort("checked")).map(todo => {
+            console.log(todo)
+            return (
             <TodoItem
               data={todo}
               key={todo._id}
               handleDeleteRequest={this.handleDeleteRequest}
-            />
-          )) : null}
-        </ButtonGroup>
+              handleUpdateRequest={this.handleUpdateRequest}
+            />)
+          }) : null}
+        </ListGroup>
       </Fragment>
     );
   }
