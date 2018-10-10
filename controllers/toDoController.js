@@ -1,6 +1,6 @@
-import db from "../models";
+const db = require("../models");
 
-export default {
+module.exports = {
   findAll: (req, res) => (
     db.TodoItems
       .findAll()

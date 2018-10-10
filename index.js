@@ -9,34 +9,10 @@ const TodoRoutes = require('./routes');
 const APP_PORT = process.env.PORT || 3001;
 
 // Create react app comes with its own webpack behind the scenes
+// TODO: If I had more time I would figure out how to get babel to transpile my code from es6 to es5
 
-// const compiler = webpack({
-// 	mode: 'development',
-// 	entry: ['whatwg-fetch', path.resolve(__dirname, '../client/src', 'index.js')],
-// 	module: {
-// 		rules: [
-// 			{
-// 				test: /\.js$/,
-// 				exclude: /\/node_modules\//,
-// 				use: {
-// 					loader: 'babel-loader',
-// 				},
-// 			},
-// 		],
-// 	},
-// 	output: {
-// 		filename: 'index.js',
-// 		path: '/',
-// 	},
-// });
 
-// const app = new WebpackDevServer(compiler, {
-// 	contentBase: '/client/public',
-// 	publicPath: '/client/src',
-// 	stats: {colors: true},
-// });
-
-//const app = express();
+const app = express();
 
 // Serve up static assets if in production
 if (process.env.NODE_ENV === "production") {

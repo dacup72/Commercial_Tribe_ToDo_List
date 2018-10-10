@@ -1,6 +1,6 @@
-import express from 'express';
+const express =require('express');
 // Methods from todoController
-import { findAll, createItem, deleteItem, updateItem } from '../../controllers/todoController';
+const { findAll, createItem, deleteItem, updateItem } =require('../../controllers/todoController');
 
 const router = express.Router();
 
@@ -11,4 +11,4 @@ router.route('/')
   .delete(deleteItem)
   .put(updateItem);
 
-export default router;
+module.exports = router;
