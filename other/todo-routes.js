@@ -1,4 +1,4 @@
-import express from 'express';
+const express =require('express');
 
 const todoExpress = express();
 
@@ -9,4 +9,4 @@ todoExpress.delete('/todo/:id', (req, res) => TodoData.delete(req.params.id).the
 // TODO: Implement
 todoExpress.put('/todo/:id', );
 
-export default todoExpress;
+module.exports = todoExpress;
