@@ -1,19 +1,23 @@
 import React from 'react';
-import { FormGroup, ControlLabel, FormControl, HelpBlock } from 'react-bootstrap';
+import { FormGroup, ControlLabel, FormControl, Col } from 'react-bootstrap';
 
 const TodoForm = ({ value, handleChange, handleKeyDown }) => (
-  <form>
-    <FormGroup controlId="todoForm">
-      <ControlLabel>What needs to be done?</ControlLabel>
-      <FormControl
-        type="text"
-        value={value}
-        placeholder="Enter text"
-        onChange={handleChange}
-        onKeyDown={handleKeyDown}
-      />
-    </FormGroup>
-  </form>
+
+  <Col sm={6}>
+    <form>
+      <FormGroup controlId="todoForm">
+        <ControlLabel>What needs to be done?</ControlLabel>
+        <FormControl
+          type="text"
+          value={value}
+          placeholder="Enter text"
+          onChange={handleChange}
+          onKeyDown={handleKeyDown}
+        />
+      </FormGroup>
+    </form>
+  </Col>
+
 );
 
 export default TodoForm;

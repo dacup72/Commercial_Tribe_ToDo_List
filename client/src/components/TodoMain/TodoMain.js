@@ -1,16 +1,19 @@
-import React, { Component, Fragment } from 'react';
+import React, { Component } from 'react';
 //import FetchApi from '../fetch-api';
 import API from '../../utils/API';
-import { ListGroup } from 'react-bootstrap';
+import { ListGroup, Grid, Row, Col } from 'react-bootstrap';
 import TodoItem from '../TodoItem';
 import TodoForm from '../TodoForm';
+import TodoStats from '../TodoStats';
 
 const ENTER_KEY_CODE = 13;
 
 export default class TodoMain extends Component {
   state = {
     todos: [],
-    newText: ''
+    newText: '',
+    completed: 0,
+    pending: 0
   };
 
   componentWillMount() {
@@ -19,7 +22,21 @@ export default class TodoMain extends Component {
 
   getTodos = () => {
     return API.getTodos()
-      .then(todos => this.setState({ todos: todos.data, newText: '' }))
+      .then(todos => {
+        let completed = 0;
+        let pending = 0;
+        console.log(todos)
+        todos.data.forEach(todo => {
+          todo.checked ? completed++ : pending++;
+        });
+
+        this.setState({ 
+          todos: todos.data, 
+          newText: '',
+          completed,
+          pending 
+        })
+      })
       .catch(() => alert('There was an error getting todos'));
   };
 
@@ -36,7 +53,7 @@ export default class TodoMain extends Component {
   };
 
   handleUpdateRequest = (id, checked) => {
-    API.updateTodo(id, {checked: !checked})
+    API.updateTodo(id, { checked: !checked })
       .then(() => this.getTodos())
       .catch(() => alert('There was an error updating todo'));
   }
@@ -65,27 +82,42 @@ export default class TodoMain extends Component {
 
   render() {
     return (
-      <Fragment>
-        <h1>Todos</h1>
-        <TodoForm 
-          value={this.state.newText}
-          handleChange={this.handleChange}
-          handleKeyDown={this.handleKeyDown}
-        />
-        <hr />
-        <ListGroup>
-          {this.state.todos.length > 0 ? this.state.todos.sort(this.dynamicSort("checked")).map(todo => {
-            console.log(todo)
-            return (
-            <TodoItem
-              data={todo}
-              key={todo._id}
-              handleDeleteRequest={this.handleDeleteRequest}
-              handleUpdateRequest={this.handleUpdateRequest}
-            />)
-          }) : null}
-        </ListGroup>
-      </Fragment>
+
+      <Grid>
+        <Row>
+          <Col sm={10} smOffset={1}>
+            <h1>Todos</h1>
+            <Row>
+              <TodoForm
+                value={this.state.newText}
+                handleChange={this.handleChange}
+                handleKeyDown={this.handleKeyDown}
+              />
+              <TodoStats 
+                pending={this.state.pending}
+                completed={this.state.completed}
+              />
+            </Row>
+
+            <hr />
+            <Row>
+              
+              <ListGroup>
+                {this.state.todos.length > 0 ? this.state.todos.sort(this.dynamicSort("checked")).map(todo => {
+                  return (
+                    <TodoItem
+                      data={todo}
+                      key={todo._id}
+                      handleDeleteRequest={this.handleDeleteRequest}
+                      handleUpdateRequest={this.handleUpdateRequest}
+                    />)
+                }) : null}
+              </ListGroup>
+
+            </Row>
+          </Col>
+        </Row>
+      </Grid>
     );
   }
 }

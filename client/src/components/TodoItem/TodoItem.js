@@ -1,17 +1,19 @@
 import React from 'react';
-import { Button, ListGroupItem } from 'react-bootstrap';
+import { Button, ListGroupItem, ButtonGroup, Glyphicon } from 'react-bootstrap';
 
 
 
 const TodoItem = ({ handleDeleteRequest, handleUpdateRequest, data: { text, _id, checked } }) => (
-  <ListGroupItem className={checked ? "disabled" : null}>
+  <ListGroupItem className={checked ? "disabled" : null} style={{ "overflow": "auto" }}>
     {text}
-    <Button bsStyle="success" className="pull-right" onClick={() => handleUpdateRequest(_id, checked)}>
-      Check
-    </Button>
-    <Button bsStyle="danger" className="pull-right" onClick={() => handleDeleteRequest(_id)}>
-      Delete
-    </Button>
+    <ButtonGroup className="pull-right">
+      <Button bsStyle="success" onClick={() => handleUpdateRequest(_id, checked)}>
+        <Glyphicon glyph="ok" />
+      </Button>
+      <Button bsStyle="danger" onClick={() => handleDeleteRequest(_id)}>
+        Delete
+      </Button>
+    </ButtonGroup>
   </ListGroupItem>
 );
 
