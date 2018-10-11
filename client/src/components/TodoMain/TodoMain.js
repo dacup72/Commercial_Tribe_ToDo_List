@@ -1,13 +1,19 @@
 import React, { Component } from 'react';
 //import FetchApi from '../fetch-api';
 import API from '../../utils/API';
+import { ListGroup, Grid, Row, Col } from 'react-bootstrap';
+import TodoItem from '../TodoItem';
+import TodoForm from '../TodoForm';
+import TodoStats from '../TodoStats';
 
 const ENTER_KEY_CODE = 13;
 
 export default class TodoMain extends Component {
   state = {
     todos: [],
-    newText: ''
+    newText: '',
+    completed: 0,
+    pending: 0
   };
 
   componentWillMount() {
@@ -16,7 +22,21 @@ export default class TodoMain extends Component {
 
   getTodos = () => {
     return API.getTodos()
-      .then(todos => this.setState({ todos: todos.data, newText: '' }))
+      .then(todos => {
+        let completed = 0;
+        let pending = 0;
+        console.log(todos)
+        todos.data.forEach(todo => {
+          todo.checked ? completed++ : pending++;
+        });
+
+        this.setState({ 
+          todos: todos.data, 
+          newText: '',
+          completed,
+          pending 
+        })
+      })
       .catch(() => alert('There was an error getting todos'));
   };
 
@@ -32,37 +52,72 @@ export default class TodoMain extends Component {
       .catch(() => alert('There was an error deleting todo'));
   };
 
+  handleUpdateRequest = (id, checked) => {
+    API.updateTodo(id, { checked: !checked })
+      .then(() => this.getTodos())
+      .catch(() => alert('There was an error updating todo'));
+  }
+
   handleChange = e => {
     this.setState({ newText: e.target.value });
   };
 
   handleKeyDown = e => {
     if (e.keyCode !== ENTER_KEY_CODE) return;
+    e.preventDefault();
     this.createTodo();
   };
 
+  dynamicSort = property => {
+    let sortOrder = 1;
+    if (property[0] === "-") {
+      sortOrder = -1;
+      property = property.substr(1);
+    }
+    return function (a, b) {
+      let result = (a[property] < b[property]) ? -1 : (a[property] > b[property]) ? 1 : 0;
+      return result * sortOrder;
+    }
+  }
+
   render() {
     return (
-      <div>
-        <h1>todos</h1>
-        <input
-          autoFocus
-          onChange={this.handleChange}
-          onKeyDown={this.handleKeyDown}
-          placeholder="What needs to be done?"
-          value={this.state.newText}
-        />
-        <ul>
-          {this.state.todos.length > 0 ? this.state.todos.map(todo => (
-            <li key={todo._id}>
-              <div className="view">
-                <label>{todo.text}</label>
-                <button onClick={() => this.handleDeleteRequest(todo._id)}>Remove Todo</button>
-              </div>
-            </li>
-          )) : null}
-        </ul>
-      </div>
+
+      <Grid>
+        <Row>
+          <Col sm={10} smOffset={1}>
+            <h1>Todos</h1>
+            <Row>
+              <TodoForm
+                value={this.state.newText}
+                handleChange={this.handleChange}
+                handleKeyDown={this.handleKeyDown}
+              />
+              <TodoStats 
+                pending={this.state.pending}
+                completed={this.state.completed}
+              />
+            </Row>
+
+            <hr />
+            <Row>
+              
+              <ListGroup>
+                {this.state.todos.length > 0 ? this.state.todos.sort(this.dynamicSort("checked")).map(todo => {
+                  return (
+                    <TodoItem
+                      data={todo}
+                      key={todo._id}
+                      handleDeleteRequest={this.handleDeleteRequest}
+                      handleUpdateRequest={this.handleUpdateRequest}
+                    />)
+                }) : null}
+              </ListGroup>
+
+            </Row>
+          </Col>
+        </Row>
+      </Grid>
     );
   }
 }

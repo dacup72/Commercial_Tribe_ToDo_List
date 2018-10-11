@@ -4,7 +4,10 @@ module.exports = {
   findAll: (req, res) => {
     db.TodoItems
       .find({})
-      .then(todos => res.json(todos))
+      .then(todos => {
+        console.log(todos)
+        res.json(todos)
+      })
       .catch((err) => res.status(500).json(err))
   },
   createItem: (req, res) => {
