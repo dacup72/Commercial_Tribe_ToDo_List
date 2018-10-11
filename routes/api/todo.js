@@ -1,6 +1,6 @@
 const express =require('express');
 // Methods from todoController
-const { findAll, createItem, deleteItem, updateItem } =require('../../controllers/todoController');
+const { findAll, createItem, deleteItem, updateItem } = require('../../controllers/toDoController');
 
 const router = express.Router();
 
